@@ -4,9 +4,7 @@ import { App } from 'components/App';
 import './index.css';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
-
 import { Provider } from 'react-redux';
-
 import { store } from './redux/store';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
