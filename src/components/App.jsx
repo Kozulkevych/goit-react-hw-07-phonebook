@@ -1,11 +1,10 @@
 import FormContact from './FormContact/FormContact';
 import FilterContacts from './FilterContacts/FilterContacts';
 import ListContacts from './ListContacts/ListContacts';
-import { TitlePrimary, TitleSecondary} from './App.styled';
+import { TitlePrimary, TitleSecondary } from './App.styled';
 import Box from './Box/Box';
 
-export const App =()=> {
-  
+export const App = () => {
   return (
     <Box
       display="flex"
@@ -30,7 +29,7 @@ export const App =()=> {
         </Box>
         <TitleSecondary>Contacts</TitleSecondary>
         <FilterContacts />
-        <ListContacts /> 
+        <ListContacts />
       </Box>
     </Box>
   );

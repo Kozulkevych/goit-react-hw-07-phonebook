@@ -1,11 +1,10 @@
-// import { nanoid } from 'nanoid';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { ContactForm, LabelForm, InputForm, Error } from './FormContact.styled';
 import { Button } from '../Button/Button';
 import { MdPersonAdd } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from 'redux/contactsThunks';
 import { getContacts } from 'redux/selectors';
 
 const phoneRegEx =
@@ -30,16 +29,16 @@ export default function FormContact() {
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
 
-  const handleSubmit = ({ name, number }, { resetForm }) => {
+  const handleSubmit = (values, { resetForm }) => {
     if (
-      contacts.find(option => option.name.toLowerCase() === name.toLowerCase())
+      contacts.some(el => el.name.toLowerCase() === values.name.toLowerCase())
     ) {
-      return alert(`${name} is already in contacts.`);
+      return alert(`${values.name} is already in contacts.`);
     }
-    if (contacts.find(option => option.number === number)) {
+    if (contacts.find(el => el.number === values.number)) {
       return alert('This number is already in contacts.');
     }
-    dispatch(addContact(name, number));
+    dispatch(addContact(values));
     resetForm();
   };
 

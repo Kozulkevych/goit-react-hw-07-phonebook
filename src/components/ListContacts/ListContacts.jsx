@@ -1,28 +1,35 @@
-import { useSelector } from 'react-redux';
-import { getContacts, getFilter } from 'redux/selectors'; 
+import { useEffect } from 'react';
+import { fetchContacts } from 'redux/contactsThunks';
+import { useDispatch, useSelector } from 'react-redux';
+import { FilteredContacts, getIsLoading, getError } from 'redux/selectors';
 import { ItemContact } from '../ItemContact/ItemContact';
-import { ContactsList, Text} from './ListContacts.styled';
-
-const getFilteredContacts = (contacts, filter) => {
-  return contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
-};
+import { ContactsList, Text } from './ListContacts.styled';
+import { Loader } from 'components/Loader/Loader';
 
 const ListContacts = () => {
-  const filter = useSelector(getFilter);
-  const contacts = useSelector(getContacts);
-  const filteredContacts = getFilteredContacts(contacts, filter);
+  const contacts = useSelector(FilteredContacts);
+  const isLoading = useSelector(getIsLoading);
+  const error = useSelector(getError);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
   const list = contacts.length;
   return (
-    <ContactsList>
-      {list !== 0 ?
-      filteredContacts.map(({ id, name, number }) => (
-        <ItemContact key={id} id={id} name={name} number={number} />
-      )) :
-      <Text>There’s nothing here yet...</Text>  
-      }
-    </ContactsList>
+    <>
+      {isLoading && !error && <Loader />}
+      <ContactsList>
+        {list !== 0 ? (
+          contacts.map(({ id, name, number }) => (
+            <ItemContact key={id} id={id} name={name} number={number} />
+          ))
+        ) : (
+          <Text>There’s nothing here yet...</Text>
+        )}
+      </ContactsList>
+    </>
   );
 };
 
